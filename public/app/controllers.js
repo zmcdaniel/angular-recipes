@@ -43,6 +43,11 @@ angular.module('RecipeCtrls', ['RecipeServices'])
 .controller('NavCtrl', ['$scope', function($scope) {
   $scope.logout = function() {
     // to implement
+    $scope.Auth = Auth;
+    $scope.logout = function() {
+      Auth.removeToken();
+      console.log('My token:', Auth.getToken());
+    }
   };
 }])
 .controller('SignupCtrl', ['$scope', '$http', '$state', function($scope, $http, $state) {
@@ -59,12 +64,18 @@ angular.module('RecipeCtrls', ['RecipeServices'])
     });
   };
 }])
-.controller('LoginCtrl', ['$scope', function($scope) {
+.controller('LoginCtrl', ['$scope', '$http', '$state', 'Auth', function($scope, $http, $state, Auth) {
   $scope.user = {
     email: '',
     password: ''
   };
   $scope.userLogin = function() {
     // to implement
+    $http.post('/api/auth', $scope.user).then(function success(res) {
+      Auth.saveToken(res.data.token);
+      $state.go('home');
+    }, function error(res) {
+      console.log(res);
+    }
   };
 }]);
