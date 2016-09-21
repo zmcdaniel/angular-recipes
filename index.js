@@ -20,8 +20,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('morgan')('dev'));
 
-app.use('/api/recipes', require('./controllers/recipes'));
-app.use('/api/users', require('./controllers/users'));
+// locking down our API routes using expressJWT middleware
+app.use('/api/recipes', expressJWT({secret: secret}), require('./controllers/recipes'));
+app.use('/api/users', expressJWT({secret: secret}).unless({method: 'POST'}), require('./controllers/users'));
 
 // Replace the above routes with the following
 // app.use('/api/recipes', expressJWT({secret: secret}), require('./controllers/recipes'));
