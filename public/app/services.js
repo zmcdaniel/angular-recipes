@@ -12,6 +12,21 @@ angular.module('RecipeServices', ['ngResource'])
     },
     removeToken: function() {
       $window.localStorage.removeItem('secretrecipes-token');
+    },
+    isLoggedIn: function() {
+      var token = this.getToken();
+      return token ? true : false;
+    },
+    currentUser: function() {
+      if(this.isLoggedIn()) {
+        var token = this.getToken();
+        try {
+          var payload = JSON.parse($window.atob(token.split('.')[1])); // Decoding our token
+          return payload;
+        } catch(err) {
+          return false;
+        }
+      }
     }
   }
 }]);

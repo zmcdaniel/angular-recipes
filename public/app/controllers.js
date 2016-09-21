@@ -45,13 +45,18 @@ angular.module('RecipeCtrls', ['RecipeServices'])
     // to implement
   };
 }])
-.controller('SignupCtrl', ['$scope', function($scope) {
+.controller('SignupCtrl', ['$scope', '$http', '$state', function($scope, $http, $state) {
   $scope.user = {
     email: '',
     password: ''
   };
   $scope.userSignup = function() {
     // to implement
+    $http.post('/api/users', $scope.user).then(function success(res) {
+      $state.go('home');
+    }, function error(res) {
+      console.log(res);
+    });
   };
 }])
 .controller('LoginCtrl', ['$scope', function($scope) {

@@ -21,8 +21,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('morgan')('dev'));
 
 // locking down our API routes using expressJWT middleware
-app.use('/api/recipes', expressJWT({secret: secret}), require('./controllers/recipes'));
-app.use('/api/users', expressJWT({secret: secret}).unless({method: 'POST'}), require('./controllers/users'));
+app.use('/api/recipes', expressJWT({secret: secret}));
+app.use('/api/users', expressJWT({secret: secret}).unless({path: ['/api/users'], method: 'post'}));
 
 // Replace the above routes with the following
 // app.use('/api/recipes', expressJWT({secret: secret}), require('./controllers/recipes'));
